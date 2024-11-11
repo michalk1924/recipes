@@ -1,0 +1,30 @@
+.recipeTag {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recipeImage {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.recipeDetails {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipeTitle {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+}
+
+.ingredients,
+.preparationTime {
+    margin: 4px 0;
+}

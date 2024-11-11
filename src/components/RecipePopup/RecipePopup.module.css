@@ -1,0 +1,20 @@
+.recipePopup {
+    position: fixed;
+    top: 50%;
+    left: calc(100vw - 300px); /* Adjust width as needed */
+    transform: translateY(-50%);
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 10;
+    border-radius: 5px;
+    max-width: 300px;
+  }
+  
+  .recipePopup p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Adjust the number of lines as needed */
+    line-clamp: 3;
+  }
