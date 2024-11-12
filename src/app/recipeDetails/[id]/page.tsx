@@ -11,10 +11,9 @@ const RecipeDetails: React.FC = () => {
     const id = pathname?.split("/").pop();
 
     const [recipe, setRecipe] = useState<Recipe | null>(null);
-    const [category, setCategory] = useState<string | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const { categories, initializeCategories } = useCategoryOptions();
+    const { categories } = useCategoryOptions();
 
 
     useEffect(() => {
@@ -35,21 +34,8 @@ const RecipeDetails: React.FC = () => {
         fetchRecipe();
     }, [id]);
 
-    useEffect(() => {
-        try{
-            initializeCategories();
-        }
-        catch(error){
-            console.error(error);
-        }
-
-    const recipeCategory = categories?.find(
-        (category) => category.category_id === recipe?.category
-    );
-    setCategory(recipeCategory?.category_name || '');
-
     console.log(categories)
-},[id]);
+    const categoryName = categories.find((category) => category.category_id === recipe?.category)?.category_name || "Unknown Category";
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -68,7 +54,7 @@ const RecipeDetails: React.FC = () => {
                     />
                     <div className={styles.recipeTitle}>
                         <h1 className={styles.recipeName}>{recipe.name}</h1>
-                        <h2 className={styles.recipeCategory}>{category}</h2>
+                        <h2 className={styles.recipeCategory}>{categoryName}</h2>
                         <p className={styles.ingredients}>
                             <strong>Ingredients:</strong>
                             {recipe.ingredients.map((ingredient, index) => (
