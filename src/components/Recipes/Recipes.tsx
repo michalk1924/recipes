@@ -89,6 +89,7 @@ export default function Recipes() {
 
   const updateFavorites = (recipe_id: string) => {
     try {
+      
       const recipe = recipes.find(r => r._id === recipe_id);
       if (recipe) {
         recipe.is_favorite = !recipe.is_favorite;
