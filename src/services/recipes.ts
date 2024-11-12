@@ -36,7 +36,18 @@ const recipesService = {
         } catch (error : any) {
             console.error(error);
         }
+    },
+
+    async updateRecipe(recipe_id: string, recipe: Recipe): Promise<any> {
+        try {
+            const response = await http.put(`/recipes/${recipe_id}`, recipe);
+            return response.data;
+        } catch (error: any) {
+            console.error("Error updating recipe:", error);
+            throw error;
+        }
     }
+    
 }
 
 export default recipesService;

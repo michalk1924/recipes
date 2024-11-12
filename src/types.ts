@@ -5,6 +5,7 @@ export interface Recipe {
     image_url: string;
     ingredients: string[];
     instructions: string;
+    is_favorite: boolean;
     //add
 }
 
