@@ -1,0 +1,21 @@
+.categoriesContainer {
+    margin-bottom: 1.5rem;
+}
+
+.select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #fff;
+}
+
+
+
+.option {
+    font-size: 1rem;
+}
