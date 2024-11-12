@@ -1,5 +1,61 @@
-.recipesList {
-    width: 70%;
+/* At the top of your CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+
+
+.recipesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Adjust 200px based on preferred card size */
+    gap: 16px; /* Space between grid items */
+    padding: 16px; /* Padding around the grid container */
+    font-family: 'Permanent Marker', cursive;
+
 }
+
+/* General container for the entire page */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  
+  .searchInput:focus {
+    border-color: #FFB22C; /* Focused border color */
+    outline: none;
+    box-shadow: 0 0 5px #FFB22C; /* Soft glow effect */
+  }
+  
+  /* Grid layout for displaying recipes */
+  .recipesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Ensures the grid doesn't stretch too wide */
+  }
+
+  .topSection {
+    display: flex;
+    align-items: flex-start; /* Aligns items to the top */
+    justify-content: flex-start; /* Aligns items to the left */
+    width: 100%; /* Ensure the section takes full width */
+    margin-bottom: 20px; /* Optional: adds space below the section */
+  }
+  
+  .searchInput {
+    padding: 8px 12px;
+    width: 200px; /* Adjust width of the search bar */
+    margin-left: 20px; /* Optional: adds space between the categories and search bar */
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+ 

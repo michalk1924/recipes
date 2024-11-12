@@ -5,7 +5,7 @@ import recipesService from '@/services/recipes';
 import { Recipe } from "@/types";
 import RecipeTag from "@/components/RecipeTag/RecipeTag";
 import Categories from "@/components/Categories/Categories";
-// import styles from '../home.module.css';
+import styles from './home.module.css';
 import RecipePopup from '@/components/RecipePopup/RecipePopup';
 
 export default function Home() {
@@ -60,23 +60,30 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <Categories setCategory={setCategory} />
-      <input
-        type="text"
-        placeholder="Search..."
-        value={filterInput}
-        onChange={e => setFilterInput(e.target.value)} />
-      {!isLoading && <div >
-        {filteredRecipes
-          .map(recipe => (
-            <RecipeTag key={recipe._id} showRecipePopup ={showRecipePopupF} recipe={recipe} />
+    <div className={styles.container}>
+      <h1 className={styles.title}>Recipe Book</h1>
+      <div className={styles.topSection}>
+        <Categories  setCategory={setCategory} />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={filterInput}
+          onChange={e => setFilterInput(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
+      {!isLoading && (
+        <div className={styles.recipesGrid}>
+          {filteredRecipes.map(recipe => (
+            <RecipeTag key={recipe._id} showRecipePopup={showRecipePopupF} recipe={recipe} />
           ))}
-      </div>}
+        </div>
+      )}
       {isLoading && <div>Loading...</div>}
       {showRecipePopup && recipePopupDetails && <RecipePopup recipe={recipePopupDetails} />}
     </div>
   );
+  
 
 }
 

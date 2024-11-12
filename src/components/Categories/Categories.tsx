@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Category } from '@/types';
 import categoriesService from '@/services/categories';
 import useCategoryOptions from '@/categoriesZustand'
+import styles from './Categories.module.css';
 
 interface CategoriesProps {
     setCategory: (category: number) => void;
@@ -40,7 +41,7 @@ const Categories: React.FC<CategoriesProps> = ({ setCategory }) => {
     };
 
     return (
-        <div>
+        <div className={styles.categories}>
             <select name="categories" id="categories" onChange={handleCategoryChange}>
                 <option value={0}>all</option>
                 {!isLoading && categories.map(category => {
