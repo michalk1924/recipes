@@ -15,7 +15,11 @@ interface RecipeTagProps {
 const RecipeTag: React.FC<RecipeTagProps> = ({ recipe, showRecipePopup, updateFavorites }) => {
     return (
         <div className={styles.recipeTag}>
+
             <img src={recipe.image_url} alt={recipe.name} className={styles.recipeImage} />
+            <p onClick={() => showRecipePopup(recipe)} className={styles.recipeTitle}>{recipe.name}</p>
+
+
             <div className={styles.recipeDetails}>
                 <h2 className={styles.recipeTitle}>{recipe.name}</h2>
                 <p className={styles.ingredients}><strong>Ingredients:</strong> {recipe.ingredients}</p>

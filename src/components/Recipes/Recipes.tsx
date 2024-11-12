@@ -5,7 +5,7 @@ import recipesService from '@/services/recipes';
 import { Recipe } from "@/types";
 import RecipeTag from "@/components/RecipeTag/RecipeTag";
 import Categories from "@/components/Categories/Categories";
-// import styles from '../home.module.css';
+import styles from './Recipes.module.css';
 import RecipePopup from '@/components/RecipePopup/RecipePopup';
 import { ONEMINUTE } from '@/app/lib/consts';
 import { getFromStorage, saveToStorage } from '@/app/lib/storage';
@@ -107,14 +107,22 @@ export default function Recipes() {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
+      
+     <h1 className={styles.title}>Recipes</h1>
+
+      <div className={styles.topSection}>
+
       <Categories setCategory={setCategory} />
 
       <input
         type="text"
         placeholder="Search..."
         value={filterInput}
-        onChange={e => setFilterInput(e.target.value)} />
+        onChange={e => setFilterInput(e.target.value)}
+        className={styles.searchInput}/>
+        
+      </div>
 
       <button onClick={() => { showFavoritesRecipes ? setShowFavoritesRecipes(false) : {} }}>
         all
@@ -124,7 +132,7 @@ export default function Recipes() {
         favorites
       </button>
 
-      {!isLoading && <div >
+      {!isLoading && <div className={styles.recipesGrid} >
         {filteredRecipes
           .map(recipe => (
             <RecipeTag key={recipe._id} showRecipePopup={showRecipePopupF} recipe={recipe}
@@ -134,6 +142,7 @@ export default function Recipes() {
 
       {isLoading && <div>Loading...</div>}
       {showRecipePopup && recipePopupDetails && <RecipePopup recipe={recipePopupDetails} />}
+      
     </div>
   );
 
