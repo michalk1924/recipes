@@ -1,5 +1,0 @@
-.recipesList {
-    width: 70%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-}
