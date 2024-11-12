@@ -19,6 +19,7 @@ export default function Recipes() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showRecipePopup, setShowRecipePopup] = useState<boolean>(false);
   const [recipePopupDetails, setRecipePopupDetails] = useState<Recipe>();
+  const [showFavoritesRecipes, setShowFavoritesRecipes] = useState<boolean>(false);
 
   useEffect(() => {
 
@@ -30,7 +31,7 @@ export default function Recipes() {
           const storedTime = parseInt(savedTimefromStorage, 10);
           const currentTime = Date.now();
           if (currentTime - storedTime > ONEMINUTE) {
-           getRecipesFromServer();
+            getRecipesFromServer();
           }
           else {
             let data;
@@ -67,59 +68,89 @@ export default function Recipes() {
 
     fetchData();
 
-  }, [category]);
+  }, []);
+
 
   useEffect(() => {
-    const filterData = async () => {
-      if (filterInput) {
-        setFilteredRecipes(recipes.filter(r => r.name.toLocaleLowerCase()
-          .includes(filterInput.toLocaleLowerCase())));
-      }
-      else {
-        setFilteredRecipes(recipes);
-      }
+    let data: Recipe[];
+    data = showFavoritesRecipes ? recipes.filter((r: Recipe) => r?.is_favorite) : recipes;
+    if (category) {
+      data = data.filter((r: Recipe) => r.category === category);
     }
-    filterData();
-  }, [recipes, filterInput]);
+    data = data.filter(r => r.name.toLocaleLowerCase()
+      .includes(filterInput.toLocaleLowerCase()));
+    setFilteredRecipes(data);
+  }, [recipes, showFavoritesRecipes, filterInput, category]);
 
   const showRecipePopupF = (recipe: Recipe) => {
     setRecipePopupDetails(recipe);
     setShowRecipePopup(true);
   }
 
+  const updateFavorites = (recipe_id: string) => {
+    try {
+      
+      const recipe = recipes.find(r => r._id === recipe_id);
+      if (recipe) {
+        recipe.is_favorite = !recipe.is_favorite;
+        setRecipes(recipes => recipes.map(r => r._id !== recipe_id ? r : recipe));
+        saveToStorage(`recipes`, recipes);
+        recipesService.updateRecipe(recipe_id, recipe);
+      }
+      else {
+        console.error("Recipe not found in the list.");
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Recipe Book</h1>
+      
+     <h1 className={styles.title}>Recipes</h1>
+
       <div className={styles.topSection}>
-        <Categories  setCategory={setCategory} />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={filterInput}
-          onChange={e => setFilterInput(e.target.value)}
-          className={styles.searchInput}
-        />
+
+      <Categories setCategory={setCategory} />
+
+      <input
+        type="text"
+        placeholder="Search..."
+        value={filterInput}
+        onChange={e => setFilterInput(e.target.value)}
+        className={styles.searchInput}/>
+        
       </div>
-      {!isLoading && (
-        <div className={styles.recipesGrid}>
-          {filteredRecipes.map(recipe => (
-            <RecipeTag key={recipe._id} showRecipePopup={showRecipePopupF} recipe={recipe} />
+
+      <button onClick={() => { showFavoritesRecipes ? setShowFavoritesRecipes(false) : {} }}>
+        all
+      </button>
+
+      <button onClick={() => { !showFavoritesRecipes ? setShowFavoritesRecipes(true) : {} }}>
+        favorites
+      </button>
+
+      {!isLoading && <div className={styles.recipesGrid} >
+        {filteredRecipes
+          .map(recipe => (
+            <RecipeTag key={recipe._id} showRecipePopup={showRecipePopupF} recipe={recipe}
+              updateFavorites={updateFavorites} />
           ))}
-        </div>
-      )}
+      </div>}
+
       {isLoading && <div>Loading...</div>}
       {showRecipePopup && recipePopupDetails && <RecipePopup recipe={recipePopupDetails} />}
+      
     </div>
   );
 
 }
 
 
-//filter
 //paging
-//pop
 //favories
 //gitgnore
 
 //r-add
-//y-byid

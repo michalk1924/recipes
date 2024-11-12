@@ -1,19 +1,33 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { getDocumentById, getDatabaseClient }  from "@/services/mongo"
+import { getDocumentById, getDatabaseClient, updateDocument } from "@/services/mongo"
 
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
-    const client = await getDatabaseClient();
-    const { id } = await params;
-
-    if (!id) return NextResponse.json({ message: 'Recipe ID not provided' }, { status: 400 });
-
-
-    const document = await getDocumentById(client, 'recipes', id);
-
-    if (!document) {
-        return NextResponse.json({ message: 'Document not found' }, { status: 404 });
+    try {
+        const client = await getDatabaseClient();
+        const { id } = await params;
+        if (!id) return NextResponse.json({ message: 'Recipe ID not provided' }, { status: 400 });
+        const document = await getDocumentById(client, 'recipes', id);
+        if (!document) {
+            return NextResponse.json({ message: 'Document not found' }, { status: 404 });
+        }
+        return NextResponse.json({ data: document });
     }
+    catch (error) {
+        return NextResponse.json({ message: 'Error retrieving recipe', error }, { status: 500 });
+    }
+}
 
-    return NextResponse.json({ data: document });
+export async function PUT(request: NextRequest, { params }: { params: any }) {
+    try {
+        const client = await getDatabaseClient();
+        const { id } = await params;
+        if (!id) return NextResponse.json({ message: 'Recipe ID not provided' }, { status: 400 });
+        const updatedRecipe = await request.json();
+        const result = await updateDocument(client, 'recipes', id, updatedRecipe);
+        return NextResponse.json({ message: 'Recipe updated successfully', result });
+    }
+    catch (error) {
+        return NextResponse.json({ message: 'Error updating recipe', error }, { status: 500 });
+    }
 }

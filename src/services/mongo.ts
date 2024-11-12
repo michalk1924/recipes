@@ -1,5 +1,6 @@
 "use service"
 
+import { Recipe } from "@/types";
 import { MongoClient, ObjectId } from "mongodb";
 
 let client: MongoClient;
@@ -21,7 +22,7 @@ export async function connectDatabase() {
 
 
 export async function insertDocument(client: any, collection: string, document: object) {
-    const db = client.db('Racheli');
+    const db = await client.db('Racheli');
     const result = await db.collection(collection).insertOne(document);
     return result;
 }
@@ -39,17 +40,23 @@ export async function getDocumentById(client: any, collection: string, id: strin
 }
 
 export async function deleteDocument(client: any, collection: string, id: string) {
-    const db = client.db('Racheli');
+    const db = await client.db('Racheli');
     const result = await db.collection(collection).deleteOne({ _id: new ObjectId(id) });
     return result;
 }
 
-export async function updateDocument(client: any, collection: string, id: string, updatedDocument: object) {
-    const db = client.db('Racheli');
-    console.log(id, updatedDocument);
-    const result = await db.collection(collection).updateOne(
-        { _id: new ObjectId(id) },
-        { $set: updatedDocument }
-    );
-    return result;
+export async function updateDocument(client: any, collection: string, id: string, updatedDocument: Recipe) {
+    const db = await client.db('Racheli');
+    try {
+        const { _id, ...updateFields } = updatedDocument;
+        const result = await db.collection(collection).updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updateFields }
+        );
+        console.log('Document updated successfully:', result);
+        return result;
+    } catch (error) {
+        console.error('Error updating document:', error);
+        throw error;
+    }
 }
