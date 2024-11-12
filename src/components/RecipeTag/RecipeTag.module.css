@@ -13,7 +13,7 @@
     transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
 }
 
-/* Darken on hover */
+/* ken on hover */
 .recipeTag:hover {
     background-color: rgba(0, 0, 0, 0.1); /* Darkens the background slightly */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow for effect */
