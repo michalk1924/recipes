@@ -1,18 +1,17 @@
-/* At the top of your CSS file */
+/* At the top of your CSS file
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 .recipesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Adjust 200px based on preferred card size */
-    gap: 16px; /* Space between grid items */
-    padding: 16px; /* Padding around the grid container */
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+    gap: 16px; 
     font-family: 'Permanent Marker', cursive;
-    width: 100%;
+    width: 70%;
     max-width: 1200px;
-
+    margin-right: auto;
 }
 
-/* General container for the entire page */
+
 .container {
     display: flex;
     flex-direction: column;
@@ -25,15 +24,14 @@
   
   
   .searchInput:focus {
-    border-color: #FFB22C; /* Focused border color */
+    border-color: #FFB22C;
     outline: none;
-    box-shadow: 0 0 5px #FFB22C; /* Soft glow effect */
-  }
+    box-shadow: 0 0 5px #FFB22C; 
   
   .title {
-    align-self: flex-start; /* Aligns the title to the left */
-    font-size: 2rem; /* Adjust the title size */
-    margin-bottom: 20px; /* Adds space below the title */
+    align-self: flex-start;
+    font-size: 2rem; 
+    margin-bottom: 20px;
     font-family: 'Permanent Marker', cursive;
     font-weight: bold;
   }
@@ -48,10 +46,164 @@
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 200px; /* Adjust width of the search bar */
-    margin-left: 20px; /* Space between categories and search bar */
+    width: 200px;
+    margin-left: 20px;
   }
-  
+}
 
   
- 
+  */
+
+/* Container styling */
+.container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  position: relative;
+  margin-right: auto;
+}
+
+/* Page title */
+.title {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Top section: category selection and search */
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Search input styling */
+.searchInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 15vw;
+  height: 6vh;
+}
+
+/* Container for buttons */
+.buttons {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+/* Button styling */
+.filterButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #666;
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  font-weight: normal;
+  transition: color 0.3s;
+}
+
+/* Active button styling */
+.filterButton.active {
+  color: #333;
+  font-weight: bold;
+}
+
+/* Underline for the active button */
+.filterButton.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background-color: #6a0dad; /* Purple underline */
+  border-radius: 2px;
+}
+
+/* Hover effect */
+.filterButton:hover {
+  color: #333;
+}
+
+/* Loading text */
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Grid layout for recipes */
+.recipesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Recipe popup styling */
+.recipePopup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  z-index: 1000;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Recipe card styling (individual cards in grid) */
+.recipeCard {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.recipeCard img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+.recipeCard h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.recipeCard p {
+  font-size: 12px;
+  color: #666;
+  margin: 10px;
+}
+
+/* Button in the recipe popup */
+.recipePopup button {
+  background-color: #6a0dad;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.recipePopup button:hover {
+  background-color: #590da1;
+}
+

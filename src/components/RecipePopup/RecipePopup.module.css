@@ -1,7 +1,7 @@
-.recipePopup {
+/* .recipePopup {
     position: fixed;
     top: 50%;
-    left: calc(100vw - 300px); /* Adjust width as needed */
+    left: calc(100vw - 300px);
     transform: translateY(-50%);
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -15,6 +15,65 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Adjust the number of lines as needed */
+    -webkit-line-clamp: 3;
     line-clamp: 3;
+  } */
+
+  .recipePopup {
+    position: fixed; /* Makes it stay in place while scrolling */
+    top: 5vh; /* Adjusts distance from the top */
+    right: 5vw; /* Adjusts distance from the right */
+    width: 22%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    z-index: 1000; /* Ensures it stays on top of other content */
+    height: 90vh;
   }
+  
+  .recipeImage {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .recipeContent {
+    padding: 15px;
+    background-color: #fff;
+  }
+  
+  .recipeName {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .recipeCategory {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .recipeDescription {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+  
+  .readMoreButton {
+    background-color: #6a0dad;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .readMoreButton:hover {
+    background-color: #590da1;
+  }
+  

@@ -1,10 +1,6 @@
-
-
-.categories{
-    padding: 10px 15px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 16px;
-      transition: all 0.3s ease;}
-    
-  
+.categories {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+  padding: 0.4rem;
+}
