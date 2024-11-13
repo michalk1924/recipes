@@ -2,8 +2,12 @@ import {http} from './http';
 import { Recipe } from '@/types';
 
 const recipesService = {
-    async getAllRecipes(){
+    async getAllRecipes(page: number | null = null) {
         try {
+            if (page){
+                const response = await http.get(`/recipes?page=${page}`);
+                return response.data;
+            }
             const response = await http.get('/recipes');
             return response.data;
         } catch (error : any) {
@@ -36,7 +40,18 @@ const recipesService = {
         } catch (error : any) {
             console.error(error);
         }
+    },
+
+    async updateRecipe(recipe_id: string, recipe: Recipe): Promise<any> {
+        try {
+            const response = await http.put(`/recipes/${recipe_id}`, recipe);
+            return response.data;
+        } catch (error: any) {
+            console.error("Error updating recipe:", error);
+            throw error;
+        }
     }
+    
 }
 
 export default recipesService;

@@ -1,30 +1,104 @@
+
+/* Container for the recipe card */
 .recipeTag {
-    display: flex;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.recipeImage {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
-
-.recipeDetails {
-    padding: 16px;
+    overflow: hidden;
+    width: 220px;
     display: flex;
     flex-direction: column;
-}
-
-.recipeTitle {
-    font-size: 1.5em;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 15px;
+    position: relative;
+  }
+  
+  /* Recipe image at the top */
+  .recipeImage {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Recipe title */
+  .recipeTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  /* Recipe details section */
+  .recipeDetails {
+    padding: 10px;
+    font-size: 14px;
+    color: #666;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .recipeDetails h2 {
+    font-size: 14px;
+    font-weight: bold;
     margin-bottom: 8px;
-}
-
-.ingredients,
-.preparationTime {
-    margin: 4px 0;
-}
+    color: #333;
+  }
+  
+  .ingredients {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+  }
+  
+  /* Button container for layout */
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  /* View Recipe button */
+  .viewButton {
+    background-color: #6a0dad;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .viewButton:hover {
+    background-color: #590da1;
+  }
+  
+  /* Favorite button styling */
+  .favoriteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #f4c542; /* Yellow color for star */
+    font-size: 16px;
+  }
+  
+  /* Icon styling */
+  .yellowIcon {
+    color: #f4c542;
+    font-size: 18px;
+  }
+  
+  .readMoreButton {
+    background-color: #6a0dad;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
