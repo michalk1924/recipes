@@ -9,6 +9,7 @@ import styles from './Recipes.module.css';
 import RecipePopup from '@/components/RecipePopup/RecipePopup';
 import { ONEMINUTE, PAGESIZE } from '@/app/lib/consts';
 import { getFromStorage, saveToStorage } from '@/app/lib/storage';
+import { useRouter } from 'next/navigation';
 
 export default function Recipes() {
 
@@ -22,6 +23,8 @@ export default function Recipes() {
   const [showFavoritesRecipes, setShowFavoritesRecipes] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,6 +129,10 @@ export default function Recipes() {
     }
   };
 
+  const addRecipe = () => {
+    router.push(`/add_recipe/`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.topSection}>
@@ -137,6 +144,9 @@ export default function Recipes() {
           onChange={e => setFilterInput(e.target.value)}
           className={styles.searchInput}
         />
+      <div>
+        <button className={styles.addRecipeButton} onClick={addRecipe} >Add Recipe</button>
+      </div>
       </div>
 
       <div className={styles.buttons}>
