@@ -24,6 +24,7 @@ const RecipeTag: React.FC<RecipeTagProps> = ({ recipe, showRecipePopup, updateFa
                 <h2 className={styles.recipeTitle}>{recipe.name}</h2>
                 <p className={styles.ingredients}><strong>Ingredients:</strong> {recipe.ingredients}</p>
             </div>
+            
             <button className={styles.readMoreButton} onClick={() => showRecipePopup(recipe)}>Read more</button>
             
             <button onClick={() => updateFavorites(recipe._id)}>
