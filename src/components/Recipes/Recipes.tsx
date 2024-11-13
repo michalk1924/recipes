@@ -170,7 +170,7 @@ export default function Recipes() {
       {isLoading && <div className={styles.loading}>Loading...</div>}
 
       {showRecipePopup && recipePopupDetails && (
-        <RecipePopup recipe={recipePopupDetails} />
+        <RecipePopup recipe={recipePopupDetails} updateFavorites={updateFavorites} />
       )}
     </div>
   );
