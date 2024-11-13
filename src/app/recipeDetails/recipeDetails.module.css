@@ -1,56 +1,22 @@
-/* Import Poppins from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-/* Apply the font to your component */
-.recipeDetails {
-    font-family: 'Poppins', Signika Negative    ; /* Fallback to sans-serif */
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 800px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    padding: 16px;
-    margin: auto;
-    margin-top:5%;
-}
-
-/* Optionally, apply a larger or bolder font to specific elements */
-.recipeName {
-    font-weight: 600;
-    font-size: 2em;
-    color:cadetblue
-
-}
-
-.recipeCategory {
-    font-weight: 400;
-    font-size: 1.2em;
-    color: #666; 
-}
-
-.instructions,
-.ingredients {
-    font-size: 1em;
-    line-height: 1.6;
-
-}
-.instructions{
-    margin: 0 18px;
-
-}
-
-
 .centerContainer {
     display: flex;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Full viewport height */
-    width: 100vw;
-    background-color: #f5f5f5; /* Optional background color */
-    padding: 20px; /* Padding for spacing */
+    align-items: center;
+    min-height: 100vh; /* Full viewport height to center vertically */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: #f5f5f5; /* Optional: adds a light background for contrast */
+}
+
+.recipeDetails {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
 
@@ -58,32 +24,64 @@
 .recipeProfile {
     display: flex;
     flex-direction: row;
-}
-
-.recipeTitle {
-    display: flex;
-    flex-direction: column;
-    margin: 13px;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .recipeImage {
-    width: 240px;
-    height: 240px;
+    width: 45%;
+    height: 45%;
     object-fit: cover;
-    margin: 18px;
     border-radius: 8px;
-
 }
 
-.recipeInfo {
-    padding: 16px;
+.recipeTitle {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 
-
-.ingredients,
-.preparationTime {
-    margin: 4px 0;
+.recipeName {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 10px;
 }
 
+.recipeCategory {
+    font-size: 1.2rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.starIcon {
+    color: #FFD700; /* Gold color for star icon */
+}
+
+.ingredients {
+    font-size: 1rem;
+    margin-top: 20px;
+}
+
+.instructions {
+    margin-top: 20px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .recipeProfile {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .recipeImage {
+        width: 100%;
+        height: auto;
+    }
+}

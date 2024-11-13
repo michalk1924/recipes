@@ -44,7 +44,7 @@ const RecipeDetails: React.FC = () => {
     
 
     return (
-        <div className="centerContainer">
+        <div className={styles.centerContainer}>
             <div className={styles.recipeDetails}>
                 <div className={styles.recipeProfile}>
                     <img
