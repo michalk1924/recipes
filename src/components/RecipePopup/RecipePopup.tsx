@@ -4,13 +4,16 @@ import React from 'react'
 import { Recipe } from '@/types';
 import useCategoryOptions from '@/categoriesZustand';
 import { useRouter } from 'next/navigation';
-import styles from './RecipePopup.module.css'
+import styles from './RecipePopup.module.css';
+import { FaRegStar, FaStar } from "react-icons/fa";
+
 
 interface RecipePopupProps {
   recipe: Recipe;
+  updateFavorites: (recipe_id: string) => void;
 }
 
-const RecipePopup: React.FC<RecipePopupProps> = ({ recipe }) => {
+const RecipePopup: React.FC<RecipePopupProps> = ({ recipe, updateFavorites }) => {
 
   const router = useRouter();
   const { categories } = useCategoryOptions();
@@ -29,6 +32,10 @@ const RecipePopup: React.FC<RecipePopupProps> = ({ recipe }) => {
         <h2 className={styles.recipeCategory}>{categoryName}</h2>
         <p className={styles.recipeDescription}>{shortInstructions}</p>
         <button onClick={readMore} className={styles.readMoreButton}>Read more</button>
+        <button onClick={() => updateFavorites(recipe._id)}>
+          {recipe.is_favorite && <span><FaStar className={styles.yellowIcon} /></span>}
+          {!recipe.is_favorite && <span><FaRegStar className={styles.yellowIcon} /></span>}
+        </button>
       </div>
     </div>
   )
