@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAllDocuments, insertDocument, deleteDocument, getDatabaseClient } from "@/services/mongo";
 import { Recipe } from "@/types";
+import {PAGESIZE} from "@/app/lib/consts"
 
 
 export async function GET(request: Request) {
@@ -8,10 +9,17 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const categoryParam = url.searchParams.get('category');
     const category = categoryParam ? parseInt(categoryParam) : null;
+    const pagingParam = url.searchParams.get('page');
     const client = await getDatabaseClient();
     let recipes: Recipe[] = await getAllDocuments(client, 'recipes');
     if (category) {
       recipes = recipes.filter(recipe => recipe.category === category);
+    }
+    if(pagingParam){
+      
+      const pageNumber = parseInt(pagingParam);
+      const startIndex = (pageNumber - 1) * PAGESIZE;
+      recipes = recipes.slice(startIndex, startIndex + PAGESIZE);      
     }
     return NextResponse.json(recipes);
   }
@@ -26,8 +34,6 @@ export async function POST(request: Request) {
   try {
     const newRecipe = await request.json();
     const insertedRecipeId = await insertDocument(client, 'recipes', newRecipe);
-
-    client.close();
     return NextResponse.json({ data: { ...newRecipe, _id: insertedRecipeId } });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to add document' }, { status: 500 });

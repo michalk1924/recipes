@@ -19,19 +19,18 @@ const RecipeTag: React.FC<RecipeTagProps> = ({ recipe, showRecipePopup, updateFa
             <img src={recipe.image_url} alt={recipe.name} className={styles.recipeImage} />
             <p onClick={() => showRecipePopup(recipe)} className={styles.recipeTitle}>{recipe.name}</p>
 
-           <div className={styles.recipeDetails}>
+
+            <div className={styles.recipeDetails}>
                 <h2 className={styles.recipeTitle}>{recipe.name}</h2>
                 <p className={styles.ingredients}><strong>Ingredients:</strong> {recipe.ingredients}</p>
             </div>
-        
-            <button onClick={() => showRecipePopup(recipe)}>View Recipe</button>
+            <button className={styles.readMoreButton} onClick={() => showRecipePopup(recipe)}>Read more</button>
+            
             <button onClick={() => updateFavorites(recipe._id)}>
                 {recipe.is_favorite && <span><FaStar className={styles.yellowIcon}/></span>}
                 {!recipe.is_favorite && <span><FaRegStar className={styles.yellowIcon}/></span>}
             </button>
         </div>
-
-      </div>
     );
 };
 

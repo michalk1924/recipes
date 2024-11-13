@@ -2,8 +2,12 @@ import {http} from './http';
 import { Recipe } from '@/types';
 
 const recipesService = {
-    async getAllRecipes(){
+    async getAllRecipes(page: number | null = null) {
         try {
+            if (page){
+                const response = await http.get(`/recipes?page=${page}`);
+                return response.data;
+            }
             const response = await http.get('/recipes');
             return response.data;
         } catch (error : any) {
