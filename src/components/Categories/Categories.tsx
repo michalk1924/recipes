@@ -16,13 +16,13 @@ const Categories: React.FC<CategoriesProps> = ({ setCategory }) => {
 
     useEffect(() => {
         setIsLoading(true);
-        try{
+        try {
             initializeCategories();
         }
-        catch(error){
+        catch (error) {
             console.error(error);
         }
-        finally{
+        finally {
             setIsLoading(false);
         }
     }, []);
