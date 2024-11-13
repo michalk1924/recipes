@@ -50,7 +50,7 @@ const recipesService = {
             console.error("Error updating recipe:", error);
             throw error;
         }
-    }
+    },
     
 }
 

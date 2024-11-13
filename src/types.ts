@@ -6,7 +6,6 @@ export interface Recipe {
     ingredients: string[];
     instructions: string;
     is_favorite: boolean;
-    //add
 }
 
 export interface Category{
