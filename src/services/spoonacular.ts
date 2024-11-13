@@ -13,11 +13,8 @@ interface Recipe {
    is_favorite: boolean;
 }
 
-
-// Your Spoonacular API key
 const API_KEY = '1b514f2b82454f67adcd23328cfd3b5e';
 
-// Base URL for Spoonacular API
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 const loadData = async () => {
