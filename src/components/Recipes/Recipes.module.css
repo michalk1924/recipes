@@ -1,6 +1,4 @@
 
-
-/* Container styling */
 .container {
   width: 70%;
   display: flex;
@@ -12,7 +10,6 @@
   margin-right: auto;
 }
 
-/* Page title */
 .title {
   font-size: 1em;
   font-weight: bold;
@@ -20,7 +17,6 @@
   color: #333;
 }
 
-/* Top section: category selection and search */
 .topSection {
   display: flex;
   justify-content: space-between;
@@ -28,7 +24,6 @@
   margin-bottom: 1rem;
 }
 
-/* Search input styling */
 .searchInput {
   padding: 8px 12px;
   border: 1px solid #ddd;
@@ -37,14 +32,12 @@
   height: 6vh;
 }
 
-/* Container for buttons */
 .buttons {
   display: flex;
   border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
 }
 
-/* Button styling */
 .filterButton {
   background: none;
   border: none;
@@ -57,13 +50,11 @@
   transition: color 0.3s;
 }
 
-/* Active button styling */
 .filterButton.active {
   color: #333;
   font-weight: bold;
 }
 
-/* Underline for the active button */
 .filterButton.active::after {
   content: "";
   position: absolute;
@@ -75,19 +66,16 @@
   border-radius: 2px;
 }
 
-/* Hover effect */
 .filterButton:hover {
   color: #333;
 }
 
-/* Loading text */
 .loading {
   text-align: center;
   font-size: 18px;
   color: #666;
 }
 
-/* Grid layout for recipes */
 .recipesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
