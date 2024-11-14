@@ -70,21 +70,6 @@ export default function AddRecipe() {
         }
     };
 
-
-    // const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    //     const formData = {
-    //         ...data,
-    //         category,
-    //         ingredients,
-    //     };
-    //     //To Do: A call to a function that will add the created object into the database
-        
-    //     await new Promise((resolve) => setTimeout(resolve, 1000));
-    //     console.log(formData); 
-    //     reset();
-    //     setIngredients([""]);
-    // };
-
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <div>
