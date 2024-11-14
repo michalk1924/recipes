@@ -79,7 +79,7 @@ export default function AddRecipe() {
     const goHome = () => {
         router.push(`../`);
       };
-
+  
     return (
         <div>
 
