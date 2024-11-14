@@ -5,7 +5,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import Categories from "@/components/Categories/Categories";
 import React, { useState } from 'react';
-import styles from './addRecipe.module.css'
+import styles from './addRecipe.module.css';
+import { useRouter } from 'next/navigation';
+import { TiHomeOutline } from "react-icons/ti";
 
 const schema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -15,6 +17,9 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 export default function AddRecipe() {
+
+    const router = useRouter();
+
     const [category, setCategory] = useState<number>(0);
     const [ingredients, setIngredients] = useState<string[]>([""]);
 
@@ -41,7 +46,7 @@ export default function AddRecipe() {
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
-    
+
             const response = await fetch('/api/recipes', {
                 method: 'POST',
                 headers: {
@@ -53,67 +58,77 @@ export default function AddRecipe() {
                     ingredients: ingredients.filter(ingredient => ingredient.trim() !== ""), // מסנן מצרכים ריקים
                 }),
             });
-    
+
             if (!response.ok) {
                 throw new Error('Failed to submit the recipe');
             }
-    
+
             const result = await response.json();
             console.log('Recipe added:', result);
-    
+
             reset();
             setIngredients([""]);
             setCategory(0);
+
         } catch (error) {
             console.error('Error:', error);
         } finally {
         }
     };
 
+    const goHome = () => {
+        router.push(`../`);
+      };
+  
     return (
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <div>
+        <div>
+
+            <button onClick={goHome} ><TiHomeOutline className={styles.goHomeButton}/></button>
+
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <input {...register("name")} type="text" placeholder="Name" className={styles.input} />
-                    {errors.name && (
-                        <div className={styles.error}>{errors.name.message}</div>
-                    )}
+                    <div>
+                        <input {...register("name")} type="text" placeholder="Name" className={styles.input} />
+                        {errors.name && (
+                            <div className={styles.error}>{errors.name.message}</div>
+                        )}
+                    </div>
+                    <div>
+                        <input {...register("image_url")} type="text" placeholder="Image URL" className={styles.input} />
+                        {errors.image_url && (
+                            <div className={styles.error}>{errors.image_url.message}</div>
+                        )}
+                    </div>
+                    <div>
+                        <input {...register("instructions")} type="text" placeholder="Instructions" className={styles.input} />
+                        {errors.instructions && (
+                            <div className={styles.error}>{errors.instructions.message}</div>
+                        )}
+                    </div>
+                    <div>
+                        <Categories setCategory={setCategory} />
+                    </div>
+                    <div>
+                        <label className={styles.label}>Ingredients:</label>
+                        {ingredients.map((ingredient, index) => (
+                            <div key={index}>
+                                <input
+                                    type="text"
+                                    value={ingredient}
+                                    onChange={(e) => handleIngredientChange(index, e.target.value)}
+                                    placeholder={`Ingredient ${index + 1}`}
+                                    className={styles.input}
+                                />
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddIngredient} className={styles.addButton}>+</button>
+                    </div>
                 </div>
-                <div>
-                    <input {...register("image_url")} type="text" placeholder="Image URL" className={styles.input}  />
-                    {errors.image_url && (
-                        <div className={styles.error}>{errors.image_url.message}</div>
-                    )}
-                </div>
-                <div>
-                    <input {...register("instructions")} type="text" placeholder="Instructions" className={styles.input}/>
-                    {errors.instructions && (
-                        <div className={styles.error}>{errors.instructions.message}</div>
-                    )}
-                </div>
-                <div>
-                    <Categories setCategory={setCategory} />
-                </div>
-                <div>
-                    <label className={styles.label}>Ingredients:</label>
-                    {ingredients.map((ingredient, index) => (
-                        <div key={index}>
-                            <input
-                                type="text"
-                                value={ingredient}
-                                onChange={(e) => handleIngredientChange(index, e.target.value)}
-                                placeholder={`Ingredient ${index + 1}`}
-                                className={styles.input}
-                            />
-                        </div>
-                    ))}
-                    <button type="button" onClick={handleAddIngredient} className={styles.addButton}>+</button>
-                </div>
-            </div>
-            <button disabled={isSubmitting} type="submit" className={styles.submitButton}>
-                {isSubmitting ? "Loading..." : "Submit"}
-            </button>
-        </form>
+                <button disabled={isSubmitting} type="submit" className={styles.submitButton}>
+                    {isSubmitting ? "Loading..." : "Submit"}
+                </button>
+            </form>
+        </div>
     );
 }
 
