@@ -40,12 +40,12 @@ export default function Recipes() {
             await getRecipesFromServer();
           }
           else {
-            let data = getFromStorage(`recipes`);
-            data = data.map((recipe:any) => ({
+            const data = getFromStorage(`recipes`);
+            const dataWithFavorites = data.map((recipe:Recipe) => ({
               ...recipe,
               is_favorite: favoriteRecipeIds.includes(recipe._id), 
             }));
-            setRecipes(data);
+            setRecipes(dataWithFavorites);
           }
         } else {
           await getRecipesFromServer();
@@ -64,19 +64,28 @@ export default function Recipes() {
   const getRecipesFromServer = async () => {
     if (!hasMore) return;
     const newRecipes = await recipesService.getAllRecipes(page);
-    const favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
+    let favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
+
+    if(!favoriteRecipeIds) favoriteRecipeIds = [];
+
+    saveToStorage(`favoriteRecipes`, favoriteRecipeIds);
 
     if (newRecipes.length === 0) {
       setHasMore(false);
       return;
     }
+
     let data = [...recipes, ...newRecipes];
-    const isHasMore = newRecipes.length === PAGESIZE;
-    data = data.map((recipe) => ({
+
+    const dataWithFavorites = data.map((recipe:Recipe) => ({
       ...recipe,
       is_favorite: favoriteRecipeIds.includes(recipe._id), 
     }));
-    setRecipes(data);
+
+    setRecipes(dataWithFavorites);
+
+    const isHasMore = newRecipes.length === PAGESIZE;
+
     setHasMore(isHasMore);
     saveToStorage(`recipes`, data);
     saveToStorage(`savedTime`, Date.now().toString());
@@ -124,59 +133,33 @@ export default function Recipes() {
     setFilteredRecipes(data);
   }, [recipes, showFavoritesRecipes, filterInput, category]);
   
-/*   useEffect(() => {
-    let data: Recipe[] = recipes;
-
-    if (showFavoritesRecipes) {
-      data = data.filter((r: Recipe) => r?.is_favorite);
-    }
-    if (category) {
-      data = data.filter((r: Recipe) => r.category === category);
-    }
-    data = data.filter(r => r.name.toLowerCase().includes(filterInput.toLowerCase()));
-
-    setFilteredRecipes(data);
-  }, [recipes, showFavoritesRecipes, filterInput, category]);
-*/
   const showRecipePopupF = (recipe: Recipe) => {
     setRecipePopupDetails(recipe);
     setShowRecipePopup(true);
   };
- 
-  // const updateFavorites = (recipe_id: string) => {
-  //   try {
-  //     const recipe = recipes.find(r => r._id === recipe_id);
-  //     if (recipe) {
-  //       recipe.is_favorite = !recipe.is_favorite;
-  //       setRecipes(recipes => recipes.map(r => r._id !== recipe_id ? r : recipe));
-  //       saveToStorage(`recipes`, recipes);
-  //       recipesService.updateRecipe(recipe_id, recipe);
-  //     } else {
-  //       console.error("Recipe not found in the list.");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
-
-  const updateFavorites = (recipe_id:string) => {
+  const updateFavorites = async (recipe_id:string) => {
     
     try {
-      let favoriteRecipes = JSON.parse(getFromStorage('favoriteRecipes') || '[]');  
+
+      let favoriteRecipes = getFromStorage('favoriteRecipes') || '[]';
+      
       if (favoriteRecipes.includes(recipe_id)) {
         favoriteRecipes = favoriteRecipes.filter((id: string) => id !== recipe_id);
       } else {
         favoriteRecipes.push(recipe_id);
       }
-  
-      saveToStorage('favoriteRecipes', JSON.stringify(favoriteRecipes));
-  
-      console.log('Updated favorite recipes:', favoriteRecipes);
-  
+
+      saveToStorage('favoriteRecipes', favoriteRecipes);
+
       setRecipes(recipes => recipes.map(r =>
         r._id === recipe_id ? { ...r, is_favorite: !r.is_favorite } : r
       ));
+
+      if(recipePopupDetails?._id == recipe_id){
+        const updatedRecipe = {...recipePopupDetails , is_favorite : !recipePopupDetails.is_favorite};
+        setRecipePopupDetails(updatedRecipe)
+      }
 
     } catch (err) {
       console.error('Error updating favorites:', err);
