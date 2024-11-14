@@ -113,39 +113,24 @@ export default function Recipes() {
     setShowRecipePopup(true);
   };
 
-  // const updateFavorites = (recipe_id: string) => {
-  //   try {
-  //     const recipe = recipes.find(r => r._id === recipe_id);
-  //     if (recipe) {
-  //       recipe.is_favorite = !recipe.is_favorite;
-  //       setRecipes(recipes => recipes.map(r => r._id !== recipe_id ? r : recipe));
-  //       saveToStorage(`recipes`, recipes);
-  //       recipesService.updateRecipe(recipe_id, recipe);
-  //     } else {
-  //       console.error("Recipe not found in the list.");
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-
   const updateFavorites = (recipe_id:string) => {
+    
     try {
-      let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');  
+      let favoriteRecipes = JSON.parse(getFromStorage('favoriteRecipes') || '[]');  
       if (favoriteRecipes.includes(recipe_id)) {
         favoriteRecipes = favoriteRecipes.filter((id: string) => id !== recipe_id);
       } else {
         favoriteRecipes.push(recipe_id);
       }
   
-      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+      saveToStorage('favoriteRecipes', JSON.stringify(favoriteRecipes));
   
       console.log('Updated favorite recipes:', favoriteRecipes);
   
       setRecipes(recipes => recipes.map(r =>
         r._id === recipe_id ? { ...r, is_favorite: !r.is_favorite } : r
       ));
+
     } catch (err) {
       console.error('Error updating favorites:', err);
     }
