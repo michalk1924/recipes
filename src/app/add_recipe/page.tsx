@@ -8,6 +8,8 @@ import React, { useState } from 'react';
 import styles from './addRecipe.module.css';
 import { useRouter } from 'next/navigation';
 import { TiHomeOutline } from "react-icons/ti";
+import reccipeService from "@/services/recipes";
+import { saveToStorage, getFromStorage } from "../lib/storage";
 
 const schema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -43,47 +45,77 @@ export default function AddRecipe() {
         setIngredients(updatedIngredients);
     };
 
-
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        // try {
+
+        //     const response = await fetch('/api/recipes', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             ...data,
+        //             category: category,
+        //             ingredients: ingredients.filter(ingredient => ingredient.trim() !== ""),
+        //         }),
+        //     });
+
+        //     if (!response.ok) {
+        //         throw new Error('Failed to submit the recipe');
+        //     }
+
+        //     const result = await response.json();
+        //     console.log('Recipe added:', result);
+
+        //     reset();
+        //     setIngredients([""]);
+        //     setCategory(0);
+
+        // } catch (error) {
+        //     console.error('Error:', error);
+        // } finally {
+        // }
         try {
+            // יצירת האובייקט לפי מבנה הממשק Recipe
+            const newRecipe = {
+                name: data.name,
+                category: category,
+                image_url: data.image_url || "", // נניח שיש שדה `image_url` ב-FormFields, אחרת ערך ריק
+                ingredients: ingredients.filter(ingredient => ingredient.trim() !== ""),
+                instructions: data.instructions,
+                is_favorite: false, // לדוגמה, מתחילים ב-false
+            };
 
-            const response = await fetch('/api/recipes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...data,
-                    category: category,
-                    ingredients: ingredients.filter(ingredient => ingredient.trim() !== ""), // מסנן מצרכים ריקים
-                }),
-            });
+            console.log(newRecipe);
 
-            if (!response.ok) {
-                throw new Error('Failed to submit the recipe');
-            }
+            const result = await reccipeService.addRecipe(newRecipe);
 
-            const result = await response.json();
             console.log('Recipe added:', result);
+
+            const recipes = getFromStorage("recipes");
+            recipes.push(newRecipe);
+            saveToStorage("recipes", recipes);
 
             reset();
             setIngredients([""]);
             setCategory(0);
 
+            router.push(`../`);
+
+
         } catch (error) {
             console.error('Error:', error);
-        } finally {
         }
     };
 
     const goHome = () => {
         router.push(`../`);
-      };
-  
+    };
+
     return (
         <div>
 
-            <button onClick={goHome} ><TiHomeOutline className={styles.goHomeButton}/></button>
+            <button onClick={goHome} ><TiHomeOutline className={styles.goHomeButton} /></button>
 
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <div>

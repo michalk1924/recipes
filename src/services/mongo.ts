@@ -45,13 +45,12 @@ export async function deleteDocument(client: any, collection: string, id: string
     return result;
 }
 
-export async function updateDocument(client: any, collection: string, id: string, updatedDocument: Recipe) {
+export async function updateDocument(client: any, collection: string, id: string, updatedDocument: object) {
     const db = await client.db('Racheli');
     try {
-        const { _id, ...updateFields } = updatedDocument;
         const result = await db.collection(collection).updateOne(
             { _id: new ObjectId(id) },
-            { $set: updateFields }
+            { $set: updateDocument }
         );
         console.log('Document updated successfully:', result);
         return result;

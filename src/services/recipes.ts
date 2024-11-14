@@ -33,7 +33,7 @@ const recipesService = {
         }
     },
 
-    async addRecipe(recipe: Recipe){
+    async addRecipe(recipe: object){
         try {
             const response = await http.post('/recipes', recipe);
             return response.data;

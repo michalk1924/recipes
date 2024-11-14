@@ -75,14 +75,23 @@ export default function Recipes() {
       return;
     }
 
-    let data = [...recipes, ...newRecipes];
+    setRecipes(prevRecipes => {
+      const data = [...prevRecipes, ...newRecipes];
+  
+      // חישוב האם כל מתכון הוא favorite
+      return data.map((recipe: Recipe) => ({
+        ...recipe,
+        is_favorite: favoriteRecipeIds.includes(recipe._id),
+      }));
+    });
+  
 
-    const dataWithFavorites = data.map((recipe:Recipe) => ({
-      ...recipe,
-      is_favorite: favoriteRecipeIds.includes(recipe._id), 
-    }));
+    const data = [...recipes, ...newRecipes];
 
-    setRecipes(dataWithFavorites);
+    // const dataWithFavorites = data.map((recipe:Recipe) => ({
+    //   ...recipe,
+    //   is_favorite: favoriteRecipeIds.includes(recipe._id), 
+    // }));
 
     const isHasMore = newRecipes.length === PAGESIZE;
 
@@ -133,6 +142,7 @@ export default function Recipes() {
     setFilteredRecipes(data);
   }, [recipes, showFavoritesRecipes, filterInput, category]);
   
+
   const showRecipePopupF = (recipe: Recipe) => {
     setRecipePopupDetails(recipe);
     setShowRecipePopup(true);
