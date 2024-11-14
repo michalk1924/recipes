@@ -21,10 +21,13 @@ export default function Recipes() {
   const [showRecipePopup, setShowRecipePopup] = useState<boolean>(false);
   const [recipePopupDetails, setRecipePopupDetails] = useState<Recipe>();
   const [showFavoritesRecipes, setShowFavoritesRecipes] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
+  // const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   const router = useRouter();
+
+  let page = 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,9 +44,9 @@ export default function Recipes() {
           }
           else {
             const data = getFromStorage(`recipes`);
-            const dataWithFavorites = data.map((recipe:Recipe) => ({
+            const dataWithFavorites = data.map((recipe: Recipe) => ({
               ...recipe,
-              is_favorite: favoriteRecipeIds.includes(recipe._id), 
+              is_favorite: favoriteRecipeIds.includes(recipe._id),
             }));
             setRecipes(dataWithFavorites);
           }
@@ -66,7 +69,7 @@ export default function Recipes() {
     const newRecipes = await recipesService.getAllRecipes(page);
     let favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
 
-    if(!favoriteRecipeIds) favoriteRecipeIds = [];
+    if (!favoriteRecipeIds) favoriteRecipeIds = [];
 
     saveToStorage(`favoriteRecipes`, favoriteRecipeIds);
 
@@ -77,21 +80,15 @@ export default function Recipes() {
 
     setRecipes(prevRecipes => {
       const data = [...prevRecipes, ...newRecipes];
-  
-      // חישוב האם כל מתכון הוא favorite
+
       return data.map((recipe: Recipe) => ({
         ...recipe,
         is_favorite: favoriteRecipeIds.includes(recipe._id),
       }));
     });
-  
+
 
     const data = [...recipes, ...newRecipes];
-
-    // const dataWithFavorites = data.map((recipe:Recipe) => ({
-    //   ...recipe,
-    //   is_favorite: favoriteRecipeIds.includes(recipe._id), 
-    // }));
 
     const isHasMore = newRecipes.length === PAGESIZE;
 
@@ -100,21 +97,24 @@ export default function Recipes() {
     saveToStorage(`savedTime`, Date.now().toString());
   };
 
-  useEffect(() => {
+  const loadMoreRecipes = async () => {
     if (page > 1) {
       try {
-        getRecipesFromServer();
+        await getRecipesFromServer();
       }
       catch (err) {
         console.error(err);
       }
     }
-  }, [page]);
+  }
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback(async () => {
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && hasMore && !isLoading) {
       if (recipes.length % PAGESIZE === 0) {
-        setPage(prevPage => prevPage + 1);
+        page++;
+        setIsLoadingMore(true);
+        await loadMoreRecipes();
+        setIsLoadingMore(false);
       }
     }
   }, [isLoading, hasMore, recipes]);
@@ -128,32 +128,32 @@ export default function Recipes() {
     const favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
 
     let data: Recipe[] = recipes;
-  
+
     if (showFavoritesRecipes) {
       data = data.filter((r: Recipe) => favoriteRecipeIds.includes(r._id));
     }
-  
+
     if (category) {
       data = data.filter((r: Recipe) => r.category === category);
     }
-  
+
     data = data.filter(r => r.name.toLowerCase().includes(filterInput.toLowerCase()));
-  
+
     setFilteredRecipes(data);
   }, [recipes, showFavoritesRecipes, filterInput, category]);
-  
+
 
   const showRecipePopupF = (recipe: Recipe) => {
     setRecipePopupDetails(recipe);
     setShowRecipePopup(true);
   };
 
-  const updateFavorites = async (recipe_id:string) => {
-    
+  const updateFavorites = async (recipe_id: string) => {
+
     try {
 
       let favoriteRecipes = getFromStorage('favoriteRecipes') || '[]';
-      
+
       if (favoriteRecipes.includes(recipe_id)) {
         favoriteRecipes = favoriteRecipes.filter((id: string) => id !== recipe_id);
       } else {
@@ -166,8 +166,8 @@ export default function Recipes() {
         r._id === recipe_id ? { ...r, is_favorite: !r.is_favorite } : r
       ));
 
-      if(recipePopupDetails?._id == recipe_id){
-        const updatedRecipe = {...recipePopupDetails , is_favorite : !recipePopupDetails.is_favorite};
+      if (recipePopupDetails?._id == recipe_id) {
+        const updatedRecipe = { ...recipePopupDetails, is_favorite: !recipePopupDetails.is_favorite };
         setRecipePopupDetails(updatedRecipe)
       }
 
@@ -191,9 +191,9 @@ export default function Recipes() {
           onChange={e => setFilterInput(e.target.value)}
           className={styles.searchInput}
         />
-      <div>
-        <button className={styles.addRecipeButton} onClick={addRecipe} >Add Recipe</button>
-      </div>
+        <div>
+          <button className={styles.addRecipeButton} onClick={addRecipe} >Add Recipe</button>
+        </div>
       </div>
 
       <div className={styles.buttons}>
