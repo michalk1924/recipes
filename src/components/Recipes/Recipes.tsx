@@ -31,6 +31,8 @@ export default function Recipes() {
       try {
         setIsLoading(true);
         const savedTimefromStorage = getFromStorage(`savedTime`);
+        const favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
+
         if (savedTimefromStorage) {
           const storedTime = parseInt(savedTimefromStorage, 10);
           const currentTime = Date.now();
@@ -39,6 +41,10 @@ export default function Recipes() {
           }
           else {
             let data = getFromStorage(`recipes`);
+            data = data.map((recipe:any) => ({
+              ...recipe,
+              is_favorite: favoriteRecipeIds.includes(recipe._id), 
+            }));
             setRecipes(data);
           }
         } else {
@@ -58,12 +64,18 @@ export default function Recipes() {
   const getRecipesFromServer = async () => {
     if (!hasMore) return;
     const newRecipes = await recipesService.getAllRecipes(page);
+    const favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
+
     if (newRecipes.length === 0) {
       setHasMore(false);
       return;
     }
     let data = [...recipes, ...newRecipes];
     const isHasMore = newRecipes.length === PAGESIZE;
+    data = data.map((recipe) => ({
+      ...recipe,
+      is_favorite: favoriteRecipeIds.includes(recipe._id), 
+    }));
     setRecipes(data);
     setHasMore(isHasMore);
     saveToStorage(`recipes`, data);
@@ -95,6 +107,24 @@ export default function Recipes() {
   }, [handleScroll]);
 
   useEffect(() => {
+    const favoriteRecipeIds = getFromStorage(`favoriteRecipes`);
+
+    let data: Recipe[] = recipes;
+  
+    if (showFavoritesRecipes) {
+      data = data.filter((r: Recipe) => favoriteRecipeIds.includes(r._id));
+    }
+  
+    if (category) {
+      data = data.filter((r: Recipe) => r.category === category);
+    }
+  
+    data = data.filter(r => r.name.toLowerCase().includes(filterInput.toLowerCase()));
+  
+    setFilteredRecipes(data);
+  }, [recipes, showFavoritesRecipes, filterInput, category]);
+  
+/*   useEffect(() => {
     let data: Recipe[] = recipes;
 
     if (showFavoritesRecipes) {
@@ -107,12 +137,12 @@ export default function Recipes() {
 
     setFilteredRecipes(data);
   }, [recipes, showFavoritesRecipes, filterInput, category]);
-
+*/
   const showRecipePopupF = (recipe: Recipe) => {
     setRecipePopupDetails(recipe);
     setShowRecipePopup(true);
   };
-
+ 
   // const updateFavorites = (recipe_id: string) => {
   //   try {
   //     const recipe = recipes.find(r => r._id === recipe_id);
