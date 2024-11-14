@@ -4,9 +4,14 @@ import { usePathname } from "next/navigation";
 import styles from "../recipeDetails.module.css";
 import recipesService from "@/services/recipes";
 import { Recipe } from "@/types";
-import useCategoryOptions from '@/categoriesZustand'
+import useCategoryOptions from '@/categoriesZustand';
+import { useRouter } from 'next/navigation';
+import { TiHomeOutline } from "react-icons/ti";
 
 const RecipeDetails: React.FC = () => {
+
+    const router = useRouter();
+
     const pathname = usePathname();
     const id = pathname?.split("/").pop();
 
@@ -34,47 +39,56 @@ const RecipeDetails: React.FC = () => {
         fetchRecipe();
     }, [id]);
 
-    console.log(categories)
+    const goHome = () => {
+        router.push(`../`);
+    };
+
     const categoryName = categories.find((category) => category.category_id === recipe?.category)?.category_name || "Unknown Category";
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
     if (!recipe) return <p>No recipe found.</p>;
 
-    
 
     return (
-        <div className={styles.centerContainer}>
-            <div className={styles.recipeDetails}>
-                <div className={styles.recipeProfile}>
-                    <img
-                        src={recipe.image_url}
-                        alt={recipe.name}
-                        className={styles.recipeImage}
-                    />
-                    <div className={styles.recipeTitle}>
-                        <h1 className={styles.recipeName}>{recipe.name}</h1>
-                        <h2 className={styles.recipeCategory}>{categoryName}</h2>
-                        <p className={styles.ingredients}>
-                            <strong>Ingredients:</strong>
-                            {recipe.ingredients.map((ingredient, index) => (
-                                <span key={index}>
-                                    <br />
-                                    {ingredient}
-                                </span>
-                            ))}
-                        </p>
+
+        <div>
+
+            <button onClick={goHome} ><TiHomeOutline className={styles.goHomeButton} /></button>
+
+            <div className={styles.centerContainer}>
+                <div className={styles.recipeDetails}>
+                    <div className={styles.recipeProfile}>
+                        <img
+                            src={recipe.image_url}
+                            alt={recipe.name}
+                            className={styles.recipeImage}
+                        />
+                        <div className={styles.recipeTitle}>
+                            <h1 className={styles.recipeName}>{recipe.name}</h1>
+                            <h2 className={styles.recipeCategory}>{categoryName}</h2>
+                            <p className={styles.ingredients}>
+                                <strong>Ingredients:</strong>
+                                {recipe.ingredients.map((ingredient, index) => (
+                                    <span key={index}>
+                                        <br />
+                                        {ingredient}
+                                    </span>
+                                ))}
+                            </p>
+                        </div>
                     </div>
+                    <p className={styles.instructions}>
+                        <strong>Instructions:</strong>
+                        <br /> {recipe.instructions}{" "}
+                    </p>
                 </div>
-                <p className={styles.instructions}>
-                    <strong>Instructions:</strong>
-                    <br /> {recipe.instructions}{" "}
-                </p>
             </div>
+
         </div>
     );
-    
-    
+
+
 };
 
 export default RecipeDetails;
