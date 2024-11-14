@@ -111,6 +111,7 @@ export default function Recipes() {
   const handleScroll = useCallback(async () => {
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && hasMore && !isLoading) {
       if (recipes.length % PAGESIZE === 0) {
+        if(isLoadingMore) return;
         page++;
         setIsLoadingMore(true);
         await loadMoreRecipes();
