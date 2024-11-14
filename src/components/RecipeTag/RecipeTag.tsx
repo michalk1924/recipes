@@ -22,9 +22,13 @@ const RecipeTag: React.FC<RecipeTagProps> = ({ recipe, showRecipePopup, updateFa
 
             <div className={styles.recipeDetails}>
                 <h2 className={styles.recipeTitle}>{recipe.name}</h2>
-                <p className={styles.ingredients}><strong>Ingredients:</strong> {recipe.ingredients}</p>
+                <p className={styles.ingredients}><strong>Ingredients:</strong> 
+                {recipe.ingredients.map(recipeIngredient =>{
+                    return <span key={recipeIngredient}>{recipeIngredient}, </span>
+                })}
+                </p>
             </div>
-            
+
             <button className={styles.readMoreButton} onClick={() => showRecipePopup(recipe)}>Read more</button>
             
             <button onClick={() => updateFavorites(recipe._id)}>

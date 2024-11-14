@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { getDocumentById, getDatabaseClient, updateDocument } from "@/services/mongo"
-
+import { getDocumentById, getDatabaseClient, updateDocument, deleteDocument } from "@/services/mongo";
 
 export async function GET(request: NextRequest, { params }: { params: any }) {
     try {
@@ -31,3 +30,16 @@ export async function PUT(request: NextRequest, { params }: { params: any }) {
         return NextResponse.json({ message: 'Error updating recipe', error }, { status: 500 });
     }
 }
+
+export async function DELETE(request: NextRequest, { params }: { params: any }) {
+try{
+    const client = await getDatabaseClient();
+    const { id } = await params;
+    const result = await deleteDocument(client, 'recipes', id);
+    return NextResponse.json({ message: 'Recipe deleted successfully', result });
+}
+    catch (error) {
+        return NextResponse.json({ message: 'Error deleting recipe', error }, { status: 500 });
+    }
+}
+
