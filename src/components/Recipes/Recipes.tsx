@@ -161,21 +161,23 @@ export default function Recipes() {
 
 
   const updateFavorites = (recipe_id:string) => {
+    
     try {
-      let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');  
+      let favoriteRecipes = JSON.parse(getFromStorage('favoriteRecipes') || '[]');  
       if (favoriteRecipes.includes(recipe_id)) {
         favoriteRecipes = favoriteRecipes.filter((id: string) => id !== recipe_id);
       } else {
         favoriteRecipes.push(recipe_id);
       }
   
-      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+      saveToStorage('favoriteRecipes', JSON.stringify(favoriteRecipes));
   
       console.log('Updated favorite recipes:', favoriteRecipes);
   
       setRecipes(recipes => recipes.map(r =>
         r._id === recipe_id ? { ...r, is_favorite: !r.is_favorite } : r
       ));
+
     } catch (err) {
       console.error('Error updating favorites:', err);
     }
