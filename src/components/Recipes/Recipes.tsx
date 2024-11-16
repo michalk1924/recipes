@@ -111,7 +111,7 @@ export default function Recipes() {
   const handleScroll = useCallback(async () => {
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && hasMore && !isLoading) {
       if (recipes.length % PAGESIZE === 0) {
-        if(isLoadingMore) return;
+        if (isLoadingMore) return;
         page++;
         setIsLoadingMore(true);
         await loadMoreRecipes();
@@ -199,17 +199,13 @@ export default function Recipes() {
 
       <div className={styles.buttons}>
         <button
-          onClick={() => setShowFavoritesRecipes(!showFavoritesRecipes)}
+          onClick={() => { showFavoritesRecipes ? setShowFavoritesRecipes(false) : {} }}
           className={`${styles.filterButton} ${!showFavoritesRecipes ? styles.active : ''}`}
-        >
-          All Recipes
-        </button>
+        > All Recipes </button>
         <button
-          onClick={() => setShowFavoritesRecipes(!showFavoritesRecipes)}
+          onClick={() => { !showFavoritesRecipes ? setShowFavoritesRecipes(true) : {} }}
           className={`${styles.filterButton} ${showFavoritesRecipes ? styles.active : ''}`}
-        >
-          Favorites
-        </button>
+        > Favorites </button>
       </div>
 
       {!isLoading && (
